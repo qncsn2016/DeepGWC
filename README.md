@@ -9,6 +9,6 @@ The paper is accepted by IJCNN 2021. We provide code with nni here. We would imp
 ## Support Data
 The model with combined bases needs support data of wavelets. We only upload the support data of dataset Cora and Citeseer in supports/ considering the file sizes. The support data is got according to the source code of [GWNN](https://github.com/Eilene/GWNN).
 ## Normal Training
-run train.py with parametes
+run train.py with parameters
 ## Fewer Training Samples
-run percent.py with parametes
+run percent.py with parameters
