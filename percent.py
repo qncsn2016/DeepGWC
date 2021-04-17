@@ -133,15 +133,7 @@ def build_and_train(hype_space):
 
 if __name__ == "__main__":
     # MGWCN cora 64
-    #params={"lr_rate_mul":0.1,"alpha":0.3,"lambda":0.8,"gamma":0.2,"wd1":0.05,"wd2":0.001,"dropout":0.6,"hidden":64,"myf":0.8}
-    # GCNII cora 64
-    # params={"lr_rate_mul":0.1,"alpha":0.1,"lambda":0.5,"wd1":0.01,"wd2":0.0005,"dropout":0.6,"hidden":64}
-    # MGWCN citeseer 32
-    #params={"lr_rate_mul":0.05,"alpha":0.4,"lambda":0.6,"gamma":0.8,"wd1":0.005,"wd2":0.0005,"dropout":0.8,"hidden":512,"myf":0.8}
-    # GCNII citeseer 32
-    #params={"lr_rate_mul":0.1,"alpha":0.1,"lambda":0.6,"wd1":0.01,"wd2":0.0005,"dropout":0.7,"hidden":256}
-    # MGWCN pubmed 32
-    params={"lr_rate_mul":0.1,"alpha":0.1,"lambda":0.4,"gamma":0.2,"wd1":0.01,"wd2":0.0005,"dropout":0.5,"hidden":512,"myf":1.2}
+    params={"lr_rate_mul":0.1,"alpha":0.3,"lambda":0.8,"gamma":0.2,"wd1":0.05,"wd2":0.001,"dropout":0.6,"hidden":64,"myf":0.8}
     build_and_train(params)
 
     # params=nni.get_next_parameter()
