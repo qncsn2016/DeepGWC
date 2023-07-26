@@ -7,7 +7,6 @@ from model import *
 import argparse
 from utils import load_citation, accuracy
 import torch.optim as optim
-import nni
 import time
 
 parser = argparse.ArgumentParser()
@@ -39,29 +38,29 @@ support1 = torch.sparse_coo_tensor(support10, support11, (adj.shape[0], adj.shap
 support0 = support0.to(device).to(torch.float32)
 support1 = support1.to(device).to_dense().to(torch.float32)
 
-def build_and_train(hype_space):
+def build_and_train(args):
     modelname = 'nof'
     modeltype = {'nof':nof,'GWCNII': GWCNII, 'GCNII': GCNII, 'combine': combinemodel, }
     model = modeltype[modelname](
         mydev=device,
-        myf=hype_space['myf'],
+        myf=args['myf'],
         support0=support0,
         support1=support1,
         adj=adj,
-        gamma=hype_space['gamma'],
+        gamma=args['gamma'],
         nnode=features.shape[0],
         nfeat=features.shape[1],
         nlayers=args.layer,
-        nhidden=hype_space['hidden'],
+        nhidden=args['hidden'],
         nclass=int(labels.max()) + 1,
-        dropout=hype_space['dropout'],
-        lamda=hype_space['lambda'],
-        alpha=hype_space['alpha'],
+        dropout=args['dropout'],
+        lamda=args['lambda'],
+        alpha=args['alpha'],
         variant=args.variant).to(device)
 
-    optimizer = optim.Adam([{'params': model.params1, 'weight_decay': hype_space['wd1']},
-                            {'params': model.params2, 'weight_decay': hype_space['wd2']},],
-                           lr=0.1*hype_space['lr_rate_mul'])
+    optimizer = optim.Adam([{'params': model.params1, 'weight_decay': args['wd1']},
+                            {'params': model.params2, 'weight_decay': args['wd2']},],
+                           lr=0.1*args['lr_rate_mul'])
 
     def train():
         model.train()
@@ -98,7 +97,6 @@ def build_and_train(hype_space):
         loss_tra, acc_tra = train()
         loss_val,acc_val = validate()
         loss_tes,acc_tes = test()
-        # nni.report_intermediate_result(acc_tes)
 
         if epoch==0 or loss_val < best:
             best = loss_val
@@ -117,7 +115,6 @@ def build_and_train(hype_space):
         if bad_counter == args.patience:
             print('early stopping at epoch %d'%epoch)
             break
-    # nni.report_final_result(best_test_acc)
     return
 
 if __name__ == "__main__":
@@ -126,5 +123,3 @@ if __name__ == "__main__":
     build_and_train(params)
     t2=time.time()
     print('time= %.2f s'%(t2-t1))
-    # params=nni.get_next_parameter()
-    # build_and_train(params)
